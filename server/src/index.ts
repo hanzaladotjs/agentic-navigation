@@ -17,20 +17,26 @@ app.post("/audio", upload.single("audio_file"), async (req: Request, res: Respon
     if (!req.file) {
       return res.status(400).json({ error: "No audio file provided" })
     }
+    const apikey= process.env.ASSEMBLY_AI as string
 
-    // ✅ Correct way
+    if(!apikey){
+        console.log("no apoi key")
+        res.json({
+            message: "no api key"
+        })
+    }
+
     const client = new AssemblyAI({
-      apiKey: process.env.ASSEMBLY_AI!,
+      apiKey: apikey,
     })
 
-    // Upload the audio buffer
     const uploadedFile:any = await client.files.upload(req.file.buffer)
     
     console.log("Uploaded file:", uploadedFile)
 
-    // Request transcript
+    
     const transcript = await client.transcripts.transcribe({
-      audio: uploadedFile.upload_url,
+      audio: uploadedFile,
       speech_model: "universal",
     })
 
