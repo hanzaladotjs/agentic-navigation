@@ -66,10 +66,13 @@ app.post("/audio", upload.single("audio_file"), async (req: Request, res: Respon
 
         const result = await ai.models.generateContent({
             model: "gemini-2.5-flash",
-            contents: `Extract the target website URL from this voice command: '${transcript.text}'. Handle variations like "go to YouTube" or "open Amazon". Add https:// if missing. Output only the full URL, nothing else. If no URL, output "none".`,
+            contents: `Extract the target website URL from this voice command: '${transcript.text}'. Handle variations like "go to YouTube" or "open Amazon". Add https:// if missing. Output only the full URL, nothing else. If no URL, output "none". Do NOT include any explanations, markdown, or code blocks.`,
         });
 
-        const targetUrl: any = result.text?.trim()
+        let targetUrl = result.text!
+targetUrl = targetUrl.replace(/[`*'"<>\\n\\r]/g, "").trim();
+targetUrl = targetUrl.replace(/\.$/, ""); // remove trailing dot
+
 
         console.log(targetUrl)
 
