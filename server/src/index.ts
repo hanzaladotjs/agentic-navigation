@@ -12,8 +12,11 @@ const upload = multer()
 const app = express()
 
 app.use(express.json())
-app.use(cors())
-
+app.use(cors({
+  origin: 'https://navagent.hanzala.xyz', 
+  methods: ['POST', 'GET'], 
+  allowedHeaders: ['Content-Type']
+}));
 app.post("/audio", upload.single("audio_file"), async (req: Request, res: Response) => {
     try {
         if (!req.file) {
