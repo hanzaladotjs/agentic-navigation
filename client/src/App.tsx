@@ -70,7 +70,15 @@ function App() {
 
     const data = await response.json()
 
-    window.open(data.url, '_blank')
+ if (data.url) {
+      window.open(data.url, '_blank')
+      console.log("Navigated to:", data.url)
+    } else {
+      console.error("No URL in response:", data)
+    }
+   
+
+
 
 
   }

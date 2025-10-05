@@ -68,6 +68,7 @@ app.post("/audio", upload.single("audio_file"), async (req: Request, res: Respon
 
         const targetUrl: any = result.text?.trim()
 
+        console.log(targetUrl)
 
         res.json({ url: targetUrl });
         
