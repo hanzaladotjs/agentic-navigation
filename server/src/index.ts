@@ -68,10 +68,9 @@ app.post("/audio", upload.single("audio_file"), async (req: Request, res: Respon
 
         const targetUrl: any = result.text?.trim()
 
-        await open(targetUrl)
 
-        res.json({ message: `Navigated to: ${targetUrl}` });
-        console.log(result.text)
+        res.json({ url: targetUrl });
+        
 
     }
 

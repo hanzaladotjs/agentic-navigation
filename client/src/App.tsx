@@ -10,7 +10,7 @@ function App() {
   const audioBlobInMemory = useRef<any>(null)
   const mediaRecorder = useRef<any>(null)
   const [theme, setTheme] = useState<boolean>(true)
-
+  
   async function recordingTheVoice() {
     setButtonMode("on")
     stream.current = await navigator.mediaDevices.getUserMedia({ audio: true })
@@ -70,8 +70,11 @@ function App() {
 
     const data = await response.json()
 
-    return { message: data.message }
+    window.open(data.url, '_blank')
+
+
   }
+
 
   // 🔊 Converts WebM → WAV using Web Audio API
   async function convertWebmToWav(webmBlob: Blob): Promise<Blob> {
