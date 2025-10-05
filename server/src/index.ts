@@ -44,7 +44,11 @@ app.post("/audio", upload.single("audio_file"), async (req: Request, res: Respon
       return res.status(500).json({ error: transcript.error })
     }
 
-    res.json({ message: transcript.text })
+
+
+
+
+
   } catch (err: any) {
     console.error("Server error:", err.message)
     res.status(500).json({ error: err.message })

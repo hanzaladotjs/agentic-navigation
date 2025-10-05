@@ -22,6 +22,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@google/genai": "^1.22.0",
     "assemblyai": "^4.16.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
