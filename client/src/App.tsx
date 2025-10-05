@@ -79,7 +79,7 @@ function App() {
 
     if (safeUrl && safeUrl !== "none") {
       if (newTab) {
-        newTab.location.href = 
+        newTab.location.href = safeUrl 
       } else {
         window.open(safeUrl, "_blank")
         setButtonMode("off")
