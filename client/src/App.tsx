@@ -37,17 +37,19 @@ function App() {
 
     setButtonMode("loading")
 
+    // ✅ Open blank tab immediately (before async logic)
+    const newTab = window.open("", "_blank")
+
     setTimeout(() => {
       if (audioBlobInMemory.current) {
-        processAudio(audioBlobInMemory.current)
+        processAudio(audioBlobInMemory.current, newTab)
         audioBlobInMemory.current = null
         console.log("In-memory Blob cleared.")
       }
     }, 500)
   }
 
-
-  async function processAudio(audioBlob: any) {
+  async function processAudio(audioBlob: any, newTab?: Window | null) {
     console.log("Converting WebM → WAV...")
 
     const wavBlob = await convertWebmToWav(audioBlob)
@@ -70,19 +72,23 @@ function App() {
 
     const data = await response.json()
 
- if (data.url) {
-      window.open(data.url, '_blank')
-      console.log("Navigated to:", data.url)
-    } else {
-      console.error("No URL in response:", data)
+    let safeUrl = (data.url || "").trim().replace(/[`'"<>\\n\\r]/g, "")
+    if (safeUrl && !safeUrl.startsWith("http")) {
+      safeUrl = "https://" + safeUrl
     }
-   
 
-
-
-
+    if (safeUrl && safeUrl !== "none") {
+      if (newTab) {
+        newTab.location.href = safeUrl // ✅ Safe redirect
+      } else {
+        window.open(safeUrl, "_blank")
+      }
+      console.log("Navigated to:", safeUrl)
+    } else {
+      console.error("No valid URL in response:", data)
+      if (newTab) newTab.close()
+    }
   }
-
 
   // 🔊 Converts WebM → WAV using Web Audio API
   async function convertWebmToWav(webmBlob: Blob): Promise<Blob> {
@@ -192,8 +198,8 @@ function App() {
           </button>
           <div> click on the voice button above, and wait patiently when its thinking. </div>
           <div className='flex space-x-20'>
-          <div> made with love by <a href='https://hanzala.xyz' className='underline'> hadi</a></div>
-          <button onClick={() => setTheme((prev) => !prev) }> {theme ? "light mode" : "dark mode"} </button>
+            <div> made with love by <a href='https://hanzala.xyz' className='underline'> hadi</a></div>
+            <button onClick={() => setTheme((prev) => !prev)}> {theme ? "light mode" : "dark mode"} </button>
           </div>
         </div>
       </div>
