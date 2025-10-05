@@ -9,6 +9,7 @@ function App() {
   const stream = useRef<any>(null)
   const audioBlobInMemory = useRef<any>(null)
   const mediaRecorder = useRef<any>(null)
+  const [theme, setTheme] = useState<boolean>(true)
 
   async function recordingTheVoice() {
     setButtonMode("on")
@@ -22,7 +23,7 @@ function App() {
 
     mediaRecorder.current.onstop = () => {
       audioBlobInMemory.current = new Blob(audioChunks.current, { type: "audio/webm" })
-      audioChunks.current = [] 
+      audioChunks.current = []
       stream.current.getTracks().forEach((track: any) => track.stop())
     }
 
@@ -45,7 +46,7 @@ function App() {
     }, 500)
   }
 
-  
+
   async function processAudio(audioBlob: any) {
     console.log("Converting WebM → WAV...")
 
@@ -68,7 +69,7 @@ function App() {
     }
 
     const data = await response.json()
-  
+
     return { message: data.message }
   }
 
@@ -136,15 +137,15 @@ function App() {
   }
 
   return (
-    <div className='flex justify-center items-center min-h-250'>
-      <div className='flex flex-col space-y-50 items-center'>
+    <div className={`flex justify-center items-center min-h-screen  + ${!theme ?'bg-black text-white': null}`}>
+      <div className='flex flex-col space-y-10 items-center mx-2'>
         <div className='text-8xl'>Travel the web.</div>
         <div className='flex flex-col space-y-10 items-center'>
           <button
             className={
               buttonMode == "loading"
-                ? 'border-[3px] border-gray-600 animate-pulse '
-                : 'border-[3px] border-gray-600 '
+                ? 'border-[3px] border-gray-600 bg-black animate-pulse '
+                : 'border-[3px] bg-black border-gray-600 '
             }
             onClick={buttonMode == "off" ? recordingTheVoice : stopRecording}
           >
@@ -178,7 +179,11 @@ function App() {
               </svg>
             )}
           </button>
-          <div> click on the voice button above </div>
+          <div> click on the voice button above, and wait patiently when its thinking. </div>
+          <div className='flex space-x-20'>
+          <div> made with love by <a href='https://hanzala.xyz' className='underline'> hadi</a></div>
+          <button onClick={() => setTheme((prev) => !prev) }> {theme ? "light mode" : "dark mode"} </button>
+          </div>
         </div>
       </div>
     </div>
