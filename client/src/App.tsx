@@ -79,9 +79,10 @@ function App() {
 
     if (safeUrl && safeUrl !== "none") {
       if (newTab) {
-        newTab.location.href = safeUrl // ✅ Safe redirect
+        newTab.location.href = 
       } else {
         window.open(safeUrl, "_blank")
+        setButtonMode("off")
       }
       console.log("Navigated to:", safeUrl)
     } else {
