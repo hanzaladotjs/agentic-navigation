@@ -58,7 +58,7 @@ function App() {
 
     console.log("Uploading WAV to server...")
 
-    const response = await fetch('http://localhost:3000/audio', {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URI, {
       method: 'POST',
       body: formData,
     })
