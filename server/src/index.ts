@@ -66,7 +66,7 @@ app.post("/audio", upload.single("audio_file"), async (req: Request, res: Respon
 
         const result = await ai.models.generateContent({
             model: "gemini-2.5-flash",
-            contents: `Extract the target website URL from this voice command: '${transcript.text}'. Handle variations like "go to YouTube" or "open Amazon". Add https:// if missing. Output only the full URL, nothing else. If no URL, output "none". Do NOT include any explanations, markdown, or code blocks.`,
+            contents: `Extract the target website URL from this voice command/prompt: '${transcript.text}'. Handle variations like "go to YouTube" or "open Amazon". Add https:// if missing. Use your own intelligence as well for example you heard someone say go to istagram.com you should first search is there a app called istagram and you will come to know "no iot doesnt exits" then you should decide whats a similar app or website that relates with users prompt and give the final url. Output only the full URL, nothing else. If no URL, output "none". Do NOT include any explanations, markdown, or code blocks.`,
         });
 
         let targetUrl = result.text!
