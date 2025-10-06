@@ -72,17 +72,15 @@ function App() {
 
     const data = await response.json()
 
-    let safeUrl = (data.url || "").trim().replace(/[`'"<>\\n\\r]/g, "")
-    if (safeUrl && !safeUrl.startsWith("http")) {
-      safeUrl = "https://" + safeUrl
-    }
+  const safeUrl = data.url
 
     if (safeUrl && safeUrl !== "none") {
       if (newTab) {
-        newTab.location.href = safeUrl 
+        newTab.location.href = safeUrl
+        setButtonMode("off")
       } else {
         window.open(safeUrl, "_blank")
-        setButtonMode("off")
+        
       }
       console.log("Navigated to:", safeUrl)
     } else {
@@ -200,7 +198,7 @@ function App() {
           <div> click on the voice button above, and wait patiently when its thinking. </div>
           <div className='flex space-x-20'>
             <div> made with love by <a href='https://hanzala.xyz' className='underline'> hadi</a></div>
-            <button onClick={() => setTheme((prev) => !prev)}> {theme ? "light mode" : "dark mode"} </button>
+            <button onClick={() => setTheme((prev) => !prev)}> {!theme ? "light mode" : "dark mode"} </button>
           </div>
         </div>
       </div>
