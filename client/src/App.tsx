@@ -39,6 +39,45 @@ function App() {
 
     // ✅ Open blank tab immediately (before async logic)
     const newTab = window.open("", "_blank")
+      if (newTab) {
+    newTab.document.write(`
+      <html>
+        <head>
+          <title>Loading...</title>
+          <style>
+            body {
+              background-color: #000;
+              color: #fff;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              margin: 0;
+              font-family: sans-serif;
+            }
+            .spinner {
+              border: 6px solid rgba(255,255,255,0.2);
+              border-top: 6px solid #fff;
+              border-radius: 50%;
+              width: 60px;
+              height: 60px;
+              animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          </style>
+        </head>
+        <body>
+          <div>
+            <div class="spinner"></div>
+            <p style="margin-top:20px;text-align:center;">Processing your voice command...</p>
+          </div>
+        </body>
+      </html>
+    `)
+  }
 
     setTimeout(() => {
       if (audioBlobInMemory.current) {
@@ -195,7 +234,7 @@ function App() {
               </svg>
             )}
           </button>
-          <div> click on the voice button above, and wait patiently when its thinking. </div>
+          <div> {buttonMode=="off" ? "Click on the button to start recording" : buttonMode == "on" ? "Click on the button to stop recording and navigate" : "Processing"} </div>
           <div className='flex space-x-20'>
             <div> made with love by <a href='https://hanzala.xyz' className='underline'> hadi</a></div>
             <button onClick={() => setTheme((prev) => !prev)}> {!theme ? "light mode" : "dark mode"} </button>
